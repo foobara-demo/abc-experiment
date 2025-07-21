@@ -1,3 +1,6 @@
+require_relative 'create_underwriter_decision'
+require_relative 'transition_loan_file_state'
+
 module FoobaraDemo
   module LoanOrigination
     class ApproveLoanFile < Foobara::Command

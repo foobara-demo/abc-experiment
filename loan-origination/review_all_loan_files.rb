@@ -9,6 +9,7 @@ module FoobaraDemo
       }]
 
       depends_on ReviewLoanFile, FindALoanFileThatNeedsReview
+      depends_on_entity LoanFile
 
       def execute
         each_loan_file_that_needs_review do
@@ -22,7 +23,7 @@ module FoobaraDemo
 
       def each_loan_file_that_needs_review
         loop do
-          self.loan_file = find_a_loan_file_that_needs_review
+          self.loan_file = run_subcommand!(FindALoanFileThatNeedsReview)
           break unless loan_file
 
           yield
@@ -30,27 +31,14 @@ module FoobaraDemo
       end
 
       def review_loan_file
-        outcome = run_subcommand!(ReviewLoanFile,
-                                  loan_file_id: loan_file.id,
-                                  pay_stub_count: loan_file.pay_stubs.size,
-                                  fico_scores: loan_file.credit_scores.map(&:score),
-                                  credit_policy: loan_file.credit_policy)
-
-        applicant_name = loan_file.loan_application.applicant.name
-
-        results << if outcome.success?
-                     underwriter_decision = outcome.result
-
-                     result = { applicant_name:, decision: underwriter_decision.decision }
-
-                     if underwriter_decision.denied?
-                       result[:denied_reasons] = underwriter_decision.denied_reasons
-                     end
-
-                     result
-                   else
-                     { applicant_name:, decision: nil }
-                   end
+        results << {
+          applicant_name: loan_file.loan_application.applicant.name,
+          decision: run_subcommand!(ReviewLoanFile,
+                                    loan_file_id: loan_file.id,
+                                    pay_stub_count: loan_file.pay_stubs.size,
+                                    fico_scores: loan_file.credit_scores.map(&:score),
+                                    credit_policy: loan_file.credit_policy)
+        }
       end
 
       def results

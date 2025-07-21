@@ -1,3 +1,5 @@
+require_relative "find_loan_file_by"
+
 module FoobaraDemo
   module LoanOrigination
     class FindALoanFileThatNeedsReview < Foobara::Command

@@ -2,34 +2,50 @@
 
 require_relative "boot"
 
-module FoobaraDemo
-  module LoanOrigination
-    OLLAMABLE = [
-      StartUnderwriterReview,
-      ApproveLoanFile,
-      DenyLoanFile,
-      ReviewLoanFile
-    ].freeze
+# use_abc = true
+use_abc = false
 
-    NOT_OLLAMABLE = [
-      ReviewAllLoanFiles
-    ].freeze
-  end
+llm_model = nil
+
+if use_abc
+  require_relative "loan-origination/agent_backed_commands/approve_loan_file"
+  require_relative "loan-origination/agent_backed_commands/deny_loan_file"
+  require_relative "loan-origination/agent_backed_commands/find_a_loan_file_that_needs_review"
+
+  require_relative "loan-origination/agent_backed_commands/start_underwriter_review"
+
+  require_relative "loan-origination/agent_backed_commands/review_loan_file"
+
+  require_relative "loan-origination/agent_backed_commands/review_all_loan_files"
+
+  # llm_model = "qwen3:32b"
+  # llm_model = "qwen3:30b"
+  # llm_model = "qwen3:14b" # works
+  # llm_model = "qwen3:8b"
+  # llm_model = "qwen3:4b"
+  # llm_model = "qwen3:1.7b"
+  # llm_model = "qwen3:0.6b"
+  llm_model = "claude-3-7-sonnet-20250219"
+  # llm_model = "claude-sonnet-4-20250514"
+  # llm_model = "claude-opus-4-20250514"
+  # llm_model = "gpt-4o"
+  # llm_model = "o1"
+else
+  require_relative "loan-origination/approve_loan_file"
+  require_relative "loan-origination/deny_loan_file"
+  require_relative "loan-origination/find_a_loan_file_that_needs_review"
+  require_relative "loan-origination/start_underwriter_review"
+
+  require_relative "loan-origination/review_loan_file"
+
+  require_relative "loan-origination/review_all_loan_files"
 end
 
 FoobaraDemo::LoanOrigination.foobara_command_classes.each do |command_class|
-  next unless command_class < Foobara::AgentBackedCommand
-
-  command_class.verbose
-  # Works but takes 6.5 minutes instead of 1.5 minutes!
-  # llm_model = if FoobaraDemo::LoanOrigination::OLLAMABLE.include?(command_class)
-  #               "qwen3:32b"
-  #             else
-  #               "claude-3-7-sonnet-20250219"
-  #             end
-  llm_model = "claude-3-7-sonnet-20250219"
-
-  command_class.llm_model(llm_model)
+  if command_class < Foobara::AgentBackedCommand
+    command_class.verbose
+    command_class.llm_model(llm_model)
+  end
 end
 
 outcome = FoobaraDemo::LoanOrigination::ReviewAllLoanFiles.run

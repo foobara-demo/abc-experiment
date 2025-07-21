@@ -19,6 +19,7 @@ module FoobaraDemo
       depends_on StartUnderwriterReview, DenyLoanFile, ApproveLoanFile
 
       def execute
+        start_underwriter_review
         determine_which_credit_score_to_use
         check_fico_score
         check_income_verification_requirements
@@ -33,6 +34,10 @@ module FoobaraDemo
       end
 
       attr_accessor :credit_score_used, :underwriter_decision
+
+      def start_underwriter_review
+        run_subcommand!(StartUnderwriterReview, loan_file: loan_file_id)
+      end
 
       def determine_which_credit_score_to_use
         self.credit_score_used = case credit_policy.credit_score_to_use
@@ -58,7 +63,7 @@ module FoobaraDemo
       end
 
       def denied_reasons
-        self.denied_reasons ||= []
+        @denied_reasons ||= []
       end
 
       def any_denied_reasons?
@@ -66,11 +71,16 @@ module FoobaraDemo
       end
 
       def approve_loan_file
-        self.underwriter_decision = run_subcommand!(ApproveLoanFile, loan_file_id:, credit_score_used:)
+        self.underwriter_decision = run_subcommand!(ApproveLoanFile,
+                                                    loan_file: loan_file_id,
+                                                    credit_score_used:)
       end
 
       def deny_loan_file
-        self.underwriter_decision = run_subcommand!(DenyLoanFile, loan_file_id:, denied_reasons:, credit_score_used:)
+        self.underwriter_decision = run_subcommand!(DenyLoanFile,
+                                                    loan_file: loan_file_id,
+                                                    denied_reasons:,
+                                                    credit_score_used:)
       end
     end
   end

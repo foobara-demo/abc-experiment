@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# gem "foobara", path: "../../../foobara/foobara"
+# gem "foobara", path: "../../foobara/foobara"
 # gem "foobara-agent", path: "../foobara/agent"
 # gem "foobara-json-schema-generator", path: "../../../foobara/json-schema-generator"
 # gem "foobara-http-api-command", path: "../../../foobara/http-api-command"
