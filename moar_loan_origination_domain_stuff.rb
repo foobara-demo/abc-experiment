@@ -28,35 +28,5 @@ module FoobaraDemo
         loan_file LoanFile, :required
       end
     end
-
-    class UnderwriterSummary < Foobara::Model
-      attributes do
-        loan_file_id :integer, :required
-        pay_stub_count :integer, :required
-        fico_scores [:integer, :integer, :integer], :required
-        credit_policy CreditPolicy, :required
-      end
-    end
-
-    class ReviewLoanFile < Foobara::AgentBackedCommand
-      description "Starts the underwriter review then checks requirements in its CreditPolicy " \
-                    "and approves or denies accordingly."
-
-      inputs UnderwriterSummary
-      result LoanFile::UnderwriterDecision
-
-      depends_on StartUnderwriterReview, DenyLoanFile, ApproveLoanFile
-    end
-
-    class ReviewAllLoanFiles < Foobara::AgentBackedCommand
-      description "Reviews all loan files that need review until no more that need review are found."
-
-      result [{
-                applicant_name: :string,
-                decision: LoanFile::UnderwriterDecision
-              }]
-
-      depends_on ReviewLoanFile, FindALoanFileThatNeedsReview
-    end
   end
 end
