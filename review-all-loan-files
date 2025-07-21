@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require_relative "boot"
+
+module FoobaraDemo
+  module LoanOrigination
+    OLLAMABLE = [
+      StartUnderwriterReview,
+      ApproveLoanFile,
+      DenyLoanFile,
+      ReviewLoanFile
+    ].freeze
+
+    NOT_OLLAMABLE = [
+      ReviewAllLoanFiles
+    ].freeze
+  end
+end
+
+FoobaraDemo::LoanOrigination.foobara_command_classes.each do |command_class|
+  next unless command_class < Foobara::AgentBackedCommand
+
+  command_class.verbose
+  # Works but takes 6.5 minutes instead of 1.5 minutes!
+  # llm_model = if FoobaraDemo::LoanOrigination::OLLAMABLE.include?(command_class)
+  #               "qwen3:32b"
+  #             else
+  #               "claude-3-7-sonnet-20250219"
+  #             end
+  llm_model = "claude-3-7-sonnet-20250219"
+
+  command_class.llm_model(llm_model)
+end
+
+outcome = FoobaraDemo::LoanOrigination::ReviewAllLoanFiles.run
+
+if outcome.success?
+  puts
+  outcome.result.each do |name_and_decision|
+    name, decision = name_and_decision.values_at(:applicant_name, :decision)
+
+    if decision.denied?
+      puts "Denied: #{name}"
+      puts "Reason: #{decision.denied_reasons.join(", ")}"
+    else
+      puts "Approved: #{name}"
+    end
+    puts
+  end
+else
+  puts outcome.errors_hash
+end
