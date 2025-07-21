@@ -5,6 +5,6 @@ require "foobara/sh_cli_connector"
 
 # class FoobaraDemo::LoanOrigination::ReviewAllLoanFiles < Foobara::AgentBackedCommand; end
 
-connector = Foobara::CommandConnectors::ShCliConnector.new
-connector.connect(FoobaraDemo::LoanOrigination)
-connector.run
+Foobara::CommandConnectors::ShCliConnector.new(
+  single_command_mode: FoobaraDemo::LoanOrigination::GenerateLoanFilesReport
+).run
