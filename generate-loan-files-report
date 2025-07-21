@@ -5,7 +5,30 @@ require "foobara/sh_cli_connector"
 
 # class FoobaraDemo::LoanOrigination::ReviewAllLoanFiles < Foobara::AgentBackedCommand; end
 
-require_relative "loan-origination/generate_loan_files_report"
+# use_abc = true
+use_abc = false
+
+if use_abc
+  require_relative "loan-origination/agent_backed_commands/generate_loan_files_report"
+
+  # llm_model = "qwen3:32b"
+  # llm_model = "qwen3:30b"
+  # llm_model = "qwen3:14b" # works
+  # llm_model = "qwen3:8b"
+  # llm_model = "qwen3:4b"
+  # llm_model = "qwen3:1.7b"
+  # llm_model = "qwen3:0.6b"
+  llm_model = "claude-3-7-sonnet-20250219"
+  # llm_model = "claude-sonnet-4-20250514"
+  # llm_model = "claude-opus-4-20250514"
+  # llm_model = "gpt-4o"
+  # llm_model = "o1"
+
+  FoobaraDemo::LoanOrigination::GenerateLoanFilesReport.verbose
+  FoobaraDemo::LoanOrigination::GenerateLoanFilesReport.llm_model llm_model
+else
+  require_relative "loan-origination/generate_loan_files_report"
+end
 
 Foobara::CommandConnectors::ShCliConnector.new(
   single_command_mode: FoobaraDemo::LoanOrigination::GenerateLoanFilesReport
