@@ -19,3 +19,6 @@ crud_driver = Foobara::LocalFilesCrudDriver.new(multi_process: true, data_path: 
 Foobara::Persistence.default_crud_driver = crud_driver
 
 require "foobara/agent_backed_command"
+
+require_relative "loan_origination"
+Foobara::Util.require_directory("#{__dir__}/loan-origination/types")
