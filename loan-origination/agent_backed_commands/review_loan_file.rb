@@ -11,7 +11,7 @@ module FoobaraDemo
 
     class ReviewLoanFile < Foobara::AgentBackedCommand
       description "Starts the underwriter review then checks requirements in its CreditPolicy " \
-                    "and approves or denies accordingly."
+                  "and approves or denies accordingly."
 
       inputs UnderwriterSummary
       result LoanFile::UnderwriterDecision
