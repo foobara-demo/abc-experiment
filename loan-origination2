@@ -2,7 +2,6 @@
 
 require_relative "boot"
 require "foobara/sh_cli_connector"
-require_relative "generate_loan_files_report"
 
 # class FoobaraDemo::LoanOrigination::ReviewAllLoanFiles < Foobara::AgentBackedCommand; end
 

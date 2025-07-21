@@ -1,15 +1,16 @@
-
 module FoobaraDemo
   module LoanOrigination
+    class ReportRow < Foobara::Model
+      attributes do
+        id :integer, :required, "The loan file id"
+        applicant :string, :required, "The name of the applicant"
+        state :string, :required, "The state of the loan file"
+        underwriter_decision LoanFile::UnderwriterDecision, "Denied reasons omitted if approved"
+      end
+    end
+
     class GenerateLoanFilesReport < Foobara::Command
-      result [
-               {
-                 id: :integer,
-                 applicant: :string,
-                 state: :string,
-                 underwriter_decision: LoanFile::UnderwriterDecision
-               }
-             ]
+      result [ReportRow]
 
       depends_on FindAllLoanFiles
 
