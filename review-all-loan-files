@@ -2,45 +2,52 @@
 
 require_relative "boot"
 
-# use_abc = true
-use_abc = false
+use_abc = true
+# use_abc = false
 
 llm_model = nil
 
-if use_abc
-  require_relative "loan-origination/agent_backed_commands/approve_loan_file"
-  require_relative "loan-origination/agent_backed_commands/deny_loan_file"
-  require_relative "loan-origination/agent_backed_commands/find_a_loan_file_that_needs_review"
+commands = [
+  :approve_loan_file,
+  :deny_loan_file,
+  :find_a_loan_file_that_needs_review,
+  :start_underwriter_review,
+  :review_loan_file,
+  :review_all_loan_files
+]
 
-  require_relative "loan-origination/agent_backed_commands/start_underwriter_review"
+command_to_path_prefix = if use_abc
+                           commands.to_h { |command| [command, :agent_backed_commands] }
+                         else
+                           commands.to_h { |command| [command, nil] }
+                         end
 
-  require_relative "loan-origination/agent_backed_commands/review_loan_file"
+command_to_path_prefix = {
+  approve_loan_file: nil,
+  deny_loan_file: nil,
+  find_a_loan_file_that_needs_review: :agent_backed_commands,
+  start_underwriter_review: nil,
+  review_loan_file: nil,
+  review_all_loan_files: nil
+}
 
-  require_relative "loan-origination/agent_backed_commands/review_all_loan_files"
-
-  # llm_model = "qwen3:32b"
-  # llm_model = "qwen3:30b"
-  # llm_model = "qwen3:14b" # works
-  # llm_model = "qwen3:8b"
-  # llm_model = "qwen3:4b"
-  # llm_model = "qwen3:1.7b"
-  # llm_model = "qwen3:0.6b"
-  llm_model = "claude-3-7-sonnet-20250219"
-  # llm_model = "claude-sonnet-4-20250514"
-  # llm_model = "claude-opus-4-20250514"
-  # llm_model = "gpt-4o"
-  # llm_model = "o1"
-else
-  require_relative "loan-origination/approve_loan_file"
-  require_relative "loan-origination/deny_loan_file"
-  require_relative "loan-origination/find_a_loan_file_that_needs_review"
-  require_relative "loan-origination/start_underwriter_review"
-
-  require_relative "loan-origination/review_loan_file"
-
-  require_relative "loan-origination/review_all_loan_files"
+command_to_path_prefix.each_pair do |command, path_prefix|
+  require_relative ["loan-origination", *path_prefix, command].join("/")
 end
 
+# llm_model = "qwen3:32b"
+# llm_model = "qwen3:30b"
+# llm_model = "qwen3:14b" # works
+# llm_model = "qwen3:8b"
+# llm_model = "qwen3:4b"
+# llm_model = "qwen3:1.7b"
+# llm_model = "qwen3:0.6b"
+llm_model = "claude-3-7-sonnet-20250219"
+# llm_model = "claude-sonnet-4-20250514"
+# llm_model = "claude-opus-4-20250514"
+# llm_model = "gpt-4o"
+# llm_model = "o1"
+#
 FoobaraDemo::LoanOrigination.foobara_command_classes.each do |command_class|
   if command_class < Foobara::AgentBackedCommand
     command_class.verbose

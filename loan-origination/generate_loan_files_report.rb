@@ -1,5 +1,3 @@
-require_relative "find_all_loan_files"
-
 module FoobaraDemo
   module LoanOrigination
     class ReportRow < Foobara::Model
