@@ -1,18 +1,10 @@
 module FoobaraDemo
   module LoanOrigination
-    class StartUnderwriterReview < Foobara::Command
+    class StartUnderwriterReview < Foobara::AgentBackedCommand
+      description "Starts the review by moving the loan file from needs_review to in_review"
+
       inputs do
         loan_file LoanFile, :required
-      end
-
-      def execute
-        transition_loan_file
-
-        nil
-      end
-
-      def transition_loan_file
-        loan_file.state_machine.perform_transition!(:start_review)
       end
     end
   end
