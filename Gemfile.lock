@@ -41,8 +41,6 @@ GEM
       foobara-llm-backed-command (>= 1.0.0, < 2.0.0)
     foobara-agent-backed-command (0.0.6)
       foobara-agent (>= 0.0.1, < 2.0.0)
-    foobara-agent-cli (0.0.4)
-      foobara-agent (~> 0.0.1)
     foobara-ai (1.0.1)
     foobara-anthropic-api (1.0.1)
       foobara-cached-command
@@ -88,6 +86,9 @@ GEM
     foobara-ollama-api (1.0.1)
       foobara-cached-command (>= 1.0.0, < 2.0.0)
       foobara-http-api-command (< 2.0.0)
+    foobara-open-ai-api (1.0.1)
+      foobara-cached-command
+      foobara-http-api-command
     foobara-organization-generator (0.0.2)
       foobara
       foobara-files-generator
@@ -188,11 +189,11 @@ PLATFORMS
 DEPENDENCIES
   foob
   foobara-agent-backed-command
-  foobara-agent-cli
   foobara-anthropic-api
   foobara-dotenv-loader
   foobara-local-files-crud-driver
   foobara-ollama-api
+  foobara-open-ai-api
   foobara-rubocop-rules
   foobara-sh-cli-connector
   irb
