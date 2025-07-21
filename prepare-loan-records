@@ -2,4 +2,6 @@
 
 require_relative "boot"
 
+require_relative "loan-origination/demo/prepare_demo_records"
+
 FoobaraDemo::LoanOrigination::Demo::PrepareDemoRecords.run!

@@ -1,3 +1,9 @@
+require_relative "../create_credit_policy"
+require_relative "../start_loan_application"
+require_relative "../add_credit_score"
+require_relative "../add_pay_stub"
+require_relative "../submit_application_for_underwriter_review"
+
 module FoobaraDemo
   module LoanOrigination
     module Demo
