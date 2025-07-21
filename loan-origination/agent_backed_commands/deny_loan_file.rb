@@ -11,6 +11,8 @@ module FoobaraDemo
         loan_file LoanFile, :required
       end
 
+      result LoanFile::UnderwriterDecision
+
       def execute
         create_underwriting_decision
         transition_loan_file
