@@ -1,6 +1,8 @@
 module FoobaraDemo
   module LoanOrigination
     class ApproveLoanFile < Foobara::AgentBackedCommand
+      description "Creates an approved underwriter decision for the loan file and transitions to drafting_docs"
+
       depends_on CreateUnderwriterDecision, TransitionLoanFileState
 
       inputs do

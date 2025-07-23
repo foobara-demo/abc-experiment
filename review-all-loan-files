@@ -3,7 +3,7 @@
 require_relative "boot"
 
 use_abc = true
-# use_abc = false
+# use_abc = false # 3 seconds
 
 llm_model = nil
 
@@ -21,33 +21,31 @@ command_to_path_prefix = if use_abc
                          else
                            commands.to_h { |command| [command, nil] }
                          end
-
-command_to_path_prefix = {
-  approve_loan_file: nil,
-  deny_loan_file: nil,
-  find_a_loan_file_that_needs_review: :agent_backed_commands,
-  start_underwriter_review: nil,
-  review_loan_file: nil,
-  review_all_loan_files: nil
-}
+#
+# command_to_path_prefix = {
+#   approve_loan_file: nil,
+#   deny_loan_file: nil,
+#   find_a_loan_file_that_needs_review: :agent_backed_commands,
+#   start_underwriter_review: nil,
+#   review_loan_file: nil,
+#   review_all_loan_files: nil
+# }
 
 command_to_path_prefix.each_pair do |command, path_prefix|
   require_relative ["loan-origination", *path_prefix, command].join("/")
 end
 
-# llm_model = "qwen3:32b"
-# llm_model = "qwen3:30b"
-# llm_model = "qwen3:14b" # works
-# llm_model = "qwen3:8b"
-# llm_model = "qwen3:4b"
-# llm_model = "qwen3:1.7b"
-# llm_model = "qwen3:0.6b"
-llm_model = "claude-3-7-sonnet-20250219"
-# llm_model = "claude-sonnet-4-20250514"
-# llm_model = "claude-opus-4-20250514"
-# llm_model = "gpt-4o"
-# llm_model = "o1"
-#
+# llm_model = "claude-3-7-sonnet-20250219" # works 2:02
+# llm_model = "claude-sonnet-4-20250514" # works 2:26
+# llm_model = "claude-opus-4-20250514" # works 5:16
+# llm_model = "o1" # works 5:38
+# llm_model = "o3-mini" # works 5:42
+llm_model = "qwen3:32b" # works 7:12
+
+# llm_model = "gpt-4o" # wow, incorrectly approved Barbara, does not work, 1:49
+# llm_model = "qwen3:14b" # 2:48 + 3:38 required two runs to get right data.
+# llm_model = "qwen3:8b" # Does not quite work but almost 2:18 + 1:12 doesn't transition the states correctly
+
 FoobaraDemo::LoanOrigination.foobara_command_classes.each do |command_class|
   if command_class < Foobara::AgentBackedCommand
     command_class.verbose
