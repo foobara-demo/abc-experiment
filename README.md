@@ -23,7 +23,7 @@ And you can run ReviewAllLoanFiles command with:
 
 `./review-all-loan-files`
 
-In that file, you can choose whether or not to use LLMs (`use_abc`) and which LLM model to use (`llm_model`)
+In that file, you can choose whether to use LLMs (`use_abc`) and which LLM model to use (`llm_model`)
 and also which versions of which files to load.
 
 ## Links
