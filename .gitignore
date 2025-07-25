@@ -9,6 +9,7 @@ tmp/
 
 /.rspec_status
 /.byebug_history
+/.ruby-version
 
 /.idea/
 .env.*.local

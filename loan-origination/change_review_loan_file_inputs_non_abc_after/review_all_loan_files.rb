@@ -3,10 +3,10 @@ module FoobaraDemo
     class ReviewAllLoanFiles < Foobara::Command
       description "Reviews all loan files that need review until no more that need review are found."
 
-      result [{
-        applicant_name: :string,
-        decision: LoanFile::UnderwriterDecision
-      }]
+      result :array do
+        applicant_name :string, :required
+        decision LoanFile::UnderwriterDecision, :required
+      end
 
       depends_on ReviewLoanFile, FindALoanFileThatNeedsReview
       depends_on_entity LoanFile
