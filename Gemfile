@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby ">= 3.4.0"
+
 # gem "foobara", path: "../../foobara/foobara"
 # gem "foobara-agent", path: "../../foobara/agent"
 # gem "foobara-json-schema-generator", path: "../../foobara/json-schema-generator"
@@ -7,13 +9,14 @@ source "https://rubygems.org"
 # gem "foobara-ai", path: "../../foobara/ai"
 # gem "foobara-llm-backed-command", path: "../../foobara/llm-backed-command"
 
-gem "foob"
-gem "foobara-agent-backed-command" # , path: "../../foobara/agent-backed-command"
 gem "foobara-anthropic-api" # , path: "../../../foobara/anthropic-api"
-gem "foobara-dotenv-loader"
-gem "foobara-local-files-crud-driver"
 gem "foobara-ollama-api" # , path: "../../foobara/ollama-api"
 gem "foobara-open-ai-api" # , path: "../../../foobara/open-ai-api"
+
+gem "foob"
+gem "foobara-agent-backed-command" # , path: "../../foobara/agent-backed-command"
+gem "foobara-dotenv-loader"
+gem "foobara-local-files-crud-driver"
 gem "foobara-rubocop-rules"
 gem "foobara-sh-cli-connector" # , path: "/home/miles/gitlocal/foobara/sh-cli-connector"
 gem "irb"
